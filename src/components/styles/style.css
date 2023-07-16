@@ -1,0 +1,24 @@
+/* Dashboard CSS Start*/
+.sub-cat {
+  cursor: pointer;
+  min-width: max-content;
+}
+.sub-cat:hover {
+  color: blue;
+}
+/* Dashboard CSS End */
+
+/* Site CSS Start */
+.all-cat-wrapper {
+  cursor: pointer;
+}
+.sub-menu-item {
+  cursor: pointer;
+}
+.sub-menu-item:hover {
+  color: #00a49f;
+}
+.login-btn:hover {
+  cursor: pointer;
+}
+/* Site CSS End*/
