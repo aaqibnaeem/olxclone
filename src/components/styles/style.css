@@ -21,4 +21,10 @@
 .login-btn:hover {
   cursor: pointer;
 }
+.modal-content-wrapper div:hover {
+  cursor: pointer;
+}
+.hc:hover{
+  cursor: pointer;
+}
 /* Site CSS End*/
