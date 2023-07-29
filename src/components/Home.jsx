@@ -1,23 +1,29 @@
 import React, { useEffect, useState } from "react";
 import "./styles/style.css";
-import { Row, Col, Modal } from "antd";
+import { Row, Col, Modal, message } from "antd";
 import { BsSearch } from "react-icons/bs";
 import { GrDown } from "react-icons/gr";
 import { get, ref } from "firebase/database";
 import { db } from "../config/Firebase";
 import Banner from "../assets/images/banner.jpg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UserTab from "./UserTab";
+import CatCards from "./CatCards";
 
 let Home = () => {
   const [menuBar, setMenuBar] = useState([]);
   const [mainCats, setMainCats] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [allAds, setAllAds] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userCheck = localStorage.getItem("isLoggedIn");
     setIsLoggedIn(userCheck);
+    getMenuBar();
+    getMainCats();
+    getAllAds();
   }, []);
 
   const getMenuBar = async () => {
@@ -72,6 +78,23 @@ let Home = () => {
       });
   };
 
+  const getAllAds = async () => {
+    await get(ref(db, `allAds/`))
+      .then((res) => {
+        if (res.exists()) {
+          const data = Object.values(res.val());
+          const tempArr = [];
+          for (let i in data) {
+            tempArr.push(data[i]);
+          }
+          setAllAds(tempArr);
+        }
+      })
+      .catch(() => {
+        message.error("Error in fetching all ads");
+      });
+  };
+
   const handleAuth = () => {
     localStorage.setItem("isLoggedIn", true);
     setIsLoggedIn(true);
@@ -82,11 +105,6 @@ let Home = () => {
     localStorage.setItem("isLoggedIn", false);
     setIsLoggedIn(false);
   };
-
-  useEffect(() => {
-    getMenuBar();
-    getMainCats();
-  }, []);
 
   return (
     <>
@@ -267,7 +285,11 @@ let Home = () => {
                   justifyContent: "center",
                   alignItems: "center",
                 }}
-                onClick={() => (isLoggedIn ? null : setShowModal(true))}
+                onClick={() =>
+                  isLoggedIn
+                    ? navigate("/sell", { replace: true })
+                    : setShowModal(true)
+                }
               >
                 <img
                   src="https://www.olx.com.pk/assets/iconSellBorder_noinline.d9eebe038fbfae9f90fd61d971037e02.svg"
@@ -347,6 +369,24 @@ let Home = () => {
           </div>
         </div>
       </div>
+      {/* All categories end */}
+
+      {allAds
+        ? Object.values(allAds).map((item, index) => {
+            let data = [];
+            for (let i in item) {
+              data.push(item[i]);
+            }
+            for (let j in data) {
+              return (
+                <CatCards heading={data[j].subCategory} adDetails={data} />
+              );
+            }
+          })
+        : null}
+
+      {/* <CatCards heading="Mobile Phones" /> */}
+
       <Modal
         title=""
         centered
@@ -415,6 +455,7 @@ let Home = () => {
           </div>
         </div>
       </Modal>
+      {/* Login modal */}
     </>
   );
 };

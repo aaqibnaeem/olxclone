@@ -22,7 +22,7 @@ let Dashboard = () => {
   return (
     <>
       <Layout>
-        <Sider>
+        <Sider collapsed={collapsed}>
           {collapsed ? (
             <div
               className="d-flex align-items-center justify-content-center text-white fs-6 fw-bold"

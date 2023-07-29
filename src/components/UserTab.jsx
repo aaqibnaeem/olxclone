@@ -31,20 +31,10 @@ let UserTab = (props) => {
               src="https://www.olx.com.pk/assets/iconProfilePicture.7975761176487dc62e25536d9a36a61d.png"
             />
           </Dropdown.Toggle>
-
           <Dropdown.Menu>
-            <Dropdown.Item onClick={props.handleLogout}>
-              Logout
-            </Dropdown.Item>
+            <Dropdown.Item onClick={props.handleLogout}>Logout</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-        {/* <img
-          style={{ maxWidth: "35px" }}
-          src="https://www.olx.com.pk/assets/iconProfilePicture.7975761176487dc62e25536d9a36a61d.png"
-          alt="chat"
-          className="me-1"
-        />
-        <GrDown /> */}
       </div>
     </div>
   );

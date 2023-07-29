@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Input, Row, Select, Modal, Checkbox, Empty } from "antd";
+import {
+  Button,
+  Col,
+  Input,
+  Row,
+  Select,
+  Modal,
+  Checkbox,
+  Empty,
+  message,
+} from "antd";
 import { db } from "../config/Firebase";
 import { get, push, ref, set, update } from "firebase/database";
 import ListGroup from "react-bootstrap/ListGroup";
@@ -146,8 +156,9 @@ const SubCategory = () => {
         obj
       )
         .then(() => {
-          console.log("Data written to DB");
+          message.success("Data written to DB");
           setSubCategory("");
+          setSelectedMainCat({ mainCategory: "", key: "" });
           getMainCats();
         })
         .catch(() => {
@@ -161,19 +172,19 @@ const SubCategory = () => {
   return (
     <>
       <h4>Sub Category</h4>
-      <Button onClick={() => console.log(mainSubCats)}>show</Button>
       <hr />
       <Row>
-        <Col xs={24} md={12} lg={6} className="m-2">
+        <Col xs={20} md={10} lg={6} className="m-2">
           <label htmlFor="mainCategory">Main Category</label>
           <Select
             id="mainCategory"
             className="w-100"
             options={mainCats}
             onChange={handleSelect}
+            value={selectedMainCat?.mainCategory}
           />
         </Col>
-        <Col xs={24} md={12} lg={6} className="m-2">
+        <Col xs={20} md={10} lg={6} className="m-2">
           <label htmlFor="subCategory">Sub Category </label>
           <Input
             value={subCategory}
@@ -181,12 +192,13 @@ const SubCategory = () => {
             name="subcategory"
             placeholder="Category name"
             id="subCategory"
+            disabled={!selectedMainCat.mainCategory}
           />
         </Col>
         <Col
           sm={24}
           md={12}
-          lg={4}
+          lg={2}
           className="d-flex align-items-end justify-content-start m-2"
         >
           <Button
@@ -208,7 +220,10 @@ const SubCategory = () => {
                     className="d-flex align-items-start overflow-x-auto"
                     id={v.mainCategoryKey}
                   >
-                    <div className="fw-bold align-self-center">
+                    <div
+                      className="fw-bold align-self-center"
+                      style={{ minWidth: "80px" }}
+                    >
                       {v.mainCategory}
                     </div>
                     {v.subCategories?.map((v, i) => {
