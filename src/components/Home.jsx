@@ -9,6 +9,7 @@ import Banner from "../assets/images/banner.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import UserTab from "./UserTab";
 import CatCards from "./CatCards";
+import AppFooter from "./AppFooter";
 
 let Home = () => {
   const [menuBar, setMenuBar] = useState([]);
@@ -386,6 +387,7 @@ let Home = () => {
         : null}
 
       {/* <CatCards heading="Mobile Phones" /> */}
+      <AppFooter />
 
       <Modal
         title=""
